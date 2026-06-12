@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: #05050a;
+    --bg2: #0c0c14;
+    --bg3: #12121e;
+    --surface: #16161f;
+    --surface2: #1e1e2e;
+    --lime: #b8ff57;
+    --lime-dim: #96d943;
+    --violet: #8b5cf6;
+    --violet-light: #a78bfa;
+    --pink: #f472b6;
+    --cyan: #22d3ee;
+    --text: #f0eeff;
+    --text2: #a09ab8;
+    --text3: #5c5878;
+    --background: #05050a;
+    --foreground: #f0eeff;
+    --card: #16161f;
+    --card-foreground: #f0eeff;
+    --popover: #16161f;
+    --popover-foreground: #f0eeff;
+    --primary: #b8ff57;
+    --primary-foreground: #05050a;
+    --secondary: #1e1e2e;
+    --secondary-foreground: #f0eeff;
+    --muted: #12121e;
+    --muted-foreground: #a09ab8;
+    --accent: #8b5cf6;
+    --accent-foreground: #05050a;
+    --destructive: #f472b6;
+    --destructive-foreground: #05050a;
+    --border: rgba(255,255,255,.12);
+    --input: #12121e;
+    --ring: #b8ff57;
+    --chart-1: #b8ff57;
+    --chart-2: #8b5cf6;
+    --chart-3: #f472b6;
+    --chart-4: #22d3ee;
+    --chart-5: #a78bfa;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --bg: #05050a;
+    --bg2: #0c0c14;
+    --bg3: #12121e;
+    --surface: #16161f;
+    --surface2: #1e1e2e;
+    --lime: #b8ff57;
+    --lime-dim: #96d943;
+    --violet: #8b5cf6;
+    --violet-light: #a78bfa;
+    --pink: #f472b6;
+    --cyan: #22d3ee;
+    --text: #f0eeff;
+    --text2: #a09ab8;
+    --text3: #5c5878;
+    --background: #05050a;
+    --foreground: #f0eeff;
+    --card: #16161f;
+    --card-foreground: #f0eeff;
+    --popover: #16161f;
+    --popover-foreground: #f0eeff;
+    --primary: #b8ff57;
+    --primary-foreground: #05050a;
+    --secondary: #1e1e2e;
+    --secondary-foreground: #f0eeff;
+    --muted: #12121e;
+    --muted-foreground: #a09ab8;
+    --accent: #8b5cf6;
+    --accent-foreground: #05050a;
+    --destructive: #f472b6;
+    --destructive-foreground: #05050a;
+    --border: rgba(255,255,255,.12);
+    --input: #12121e;
+    --ring: #b8ff57;
+    --chart-1: #b8ff57;
+    --chart-2: #8b5cf6;
+    --chart-3: #f472b6;
+    --chart-4: #22d3ee;
+    --chart-5: #a78bfa;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-bg text-text;
+    font-family: "Satoshi", system-ui, sans-serif;
+  }
+}
