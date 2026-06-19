@@ -15,8 +15,14 @@ export type GenerateJobData = {
 let generateQueue: Queue<GenerateJobData> | undefined;
 
 export function getGenerateQueue() {
+  const connection = getRedisConnection();
+  if (!connection) {
+    console.warn("Redis not configured—queue unavailable");
+    return undefined;
+  }
+  
   generateQueue ??= new Queue<GenerateJobData>(GENERATE_QUEUE_NAME, {
-    connection: getRedisConnection(),
+    connection,
     defaultJobOptions,
   });
   return generateQueue;
@@ -25,6 +31,11 @@ export function getGenerateQueue() {
 export async function addGenerateJob(
   data: GenerateJobData,
   options?: JobsOptions
-): Promise<Job<GenerateJobData>> {
-  return getGenerateQueue().add(GENERATE_JOB_NAME, data, options);
+): Promise<Job<GenerateJobData> | undefined> {
+  const queue = getGenerateQueue();
+  if (!queue) {
+    console.warn("Redis not configured—can't add job");
+    return undefined;
+  }
+  return queue.add(GENERATE_JOB_NAME, data, options);
 }
