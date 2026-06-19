@@ -1,122 +1,60 @@
-"use client";
-
-import { useState } from "react";
+import { Bot, Zap, BarChart3, Calendar, Instagram, Twitter, Brain, Target } from "lucide-react";
 
 const features = [
   {
-    icon: "📊",
-    title: "Weekly strategy briefing",
-    description: "Every Monday your CMO delivers a written strategy — what to post, why, and what's winning right now.",
-    tag: "CMO-grade analysis",
+    title: "Competitor Research",
+    description: "Automatically analyzes your competitors' top-performing posts and finds content gaps.",
+    icon: Target,
   },
   {
-    icon: "🎯",
-    title: "Brand voice lock",
-    description: "Brief your CMO once — tone, audience, pillars, what to avoid. Sounds like you, not generic AI.",
-    tag: "Sounds like you",
+    title: "Smart Content Creation",
+    description: "Generates Instagram captions, carousels, and Twitter threads tailored to your brand voice.",
+    icon: Brain,
   },
   {
-    icon: "🔍",
-    title: "Competitor monitoring",
-    description: "Tracks competitor content and surfaces gaps you can exploit before they do.",
-    tag: "Starter + Pro",
+    title: "Auto Scheduling",
+    description: "Plans your content calendar 7+ days in advance and posts automatically.",
+    icon: Calendar,
   },
   {
-    icon: "📈",
-    title: "Performance memory",
-    description: "Every post is tracked. The CMO learns what works and compounds performance weekly.",
-    tag: "Gets smarter",
+    title: "Performance Tracking",
+    description: "Measures engagement, tracks uplift, and optimizes future content based on results.",
+    icon: BarChart3,
   },
   {
-    icon: "📬",
-    title: "Daily digest email",
-    description: "Morning briefing — what's posting today, yesterday's performance, one action.",
-    tag: "Starter + Pro",
+    title: "Instagram First",
+    description: "Native support for Instagram Reels, Carousels, and single-image posts.",
+    icon: Instagram,
   },
   {
-    icon: "⚡",
-    title: "Standing instructions",
-    description: "Give standing orders: 'always include a product link', 'never post Sundays'.",
-    tag: "Full control",
+    title: "Twitter/X Ready",
+    description: "Creates optimized threads and posts for Twitter/X algorithm.",
+    icon: Twitter,
   },
 ];
 
 export default function FeaturesSection() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [cardId, setCardId] = useState<number | null>(null);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-    setCardId(index);
-  };
-
   return (
-    <section className="py-24">
+    <section id="features" className="py-24 bg-bg2">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <p className="text-lime text-sm mb-3 font-medium" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
-            {/* // Features */}
-          </p>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ fontFamily: "var(--font-clash-display)" }}>
-            Not a tool. An operator.
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">
+            Everything you need, out of the box
           </h2>
-          <p className="text-text2 max-w-2xl mx-auto text-lg">
-            SMgrowai thinks like a senior CMO — makes decisions, explains reasoning, only asks when it needs you.
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            SMgrowai handles the entire marketing pipeline, from research to publishing.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature, index) => (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, i) => (
             <div
-              key={index}
-              className="p-8 rounded-2xl border bg-surface relative overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1"
-              style={{
-                borderColor: cardId === index ? "rgba(139,92,246,0.35)" : "rgba(255,255,255,0.07)",
-              }}
-              onMouseMove={(e) => handleMouseMove(e, index)}
-              onMouseLeave={() => setCardId(null)}
+              key={i}
+              className="p-8 rounded-2xl bg-surface border border-border hover:border-primary/30 hover:shadow-[0_0_30px_rgba(184,255,87,0.1)] transition-all duration-300"
             >
-              {cardId === index && (
-                <div
-                  className="pointer-events-none absolute inset-0 rounded-2xl"
-                  style={{
-                    background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(184,255,87,0.12), transparent 40%)`,
-                    transition: "opacity 0.3s",
-                  }}
-                />
-              )}
-
-              <div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-6"
-                style={{
-                  background: "linear-gradient(135deg, rgba(139,92,246,0.1), rgba(184,255,87,0.1))",
-                }}
-              >
-                {feature.icon}
-              </div>
-
-              <h3 className="text-2xl font-bold mb-3" style={{ fontFamily: "var(--font-clash-display)" }}>
-                {feature.title}
-              </h3>
-
-              <p className="text-text2 mb-6 leading-relaxed">
-                {feature.description}
-              </p>
-
-              <span
-                className="inline-block px-3 py-1 rounded-full text-sm"
-                style={{
-                  fontFamily: "var(--font-jetbrains-mono)",
-                  color: "var(--violet-light)",
-                  background: "rgba(139,92,246,0.1)",
-                }}
-              >
-                {feature.tag}
-              </span>
+              <feature.icon className="w-12 h-12 text-primary mb-6" />
+              <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+              <p className="text-muted-foreground">{feature.description}</p>
             </div>
           ))}
         </div>
