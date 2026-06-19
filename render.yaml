@@ -8,26 +8,28 @@ services:
     buildCommand: npm ci && npx prisma generate && npm run build
     startCommand: npm start
     envVars:
-      - key: NODE_VERSION
-        value: 20
-      - key: NODE_ENV
-        value: production
-      - key: DATABASE_URL
-        fromDatabase:
-          name: smgrowai-db
-          property: connectionString
-      - key: AUTH_SECRET
-        generateValue: true
-      - key: NEXTAUTH_URL
-        fromService:
-          type: web
-          name: smgrowai-web
-          property: host
-      - key: NEXT_PUBLIC_APP_URL
-        fromService:
-          type: web
-          name: smgrowai-web
-          property: host
+    - key: NODE_VERSION
+      value: 20
+    - key: NODE_ENV
+      value: production
+    - key: NEXT_PUBLIC_NODE_ENV
+      value: production
+    - key: DATABASE_URL
+      fromDatabase:
+        name: smgrowai-db
+        property: connectionString
+    - key: AUTH_SECRET
+      generateValue: true
+    - key: NEXTAUTH_URL
+      fromService:
+        type: web
+        name: smgrowai-web
+        property: host
+    - key: NEXT_PUBLIC_APP_URL
+      fromService:
+        type: web
+        name: smgrowai-web
+        property: host
 
 databases:
   - name: smgrowai-db
