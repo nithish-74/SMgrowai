@@ -19,34 +19,39 @@ export default function SignInButtons() {
 
   return (
     <div className="space-y-3">
-      <button
-        onClick={() => handleSignIn("credentials")}
-        className="w-full flex items-center justify-center gap-3 p-3 rounded-xl font-semibold transition-all hover:translate-y-[-1px] hover:shadow-[0_0_30px_rgba(184,255,87,0.25)]"
-        style={{
-          background: colors.lime,
-          color: "#05050a"
-        }}
-      >
-        <Sparkles className="h-5 w-5" />
-        Continue with Demo
-      </button>
-
-      <div className="relative my-4">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t" style={{ borderColor: colors.border2 }}></div>
-        </div>
-        <div className="relative flex justify-center text-sm">
-          <span
-            className="px-4"
+      {/* Demo login only in development */}
+      {process.env.NEXT_PUBLIC_NODE_ENV === "development" && (
+        <>
+          <button
+            onClick={() => handleSignIn("credentials")}
+            className="w-full flex items-center justify-center gap-3 p-3 rounded-xl font-semibold transition-all hover:translate-y-[-1px] hover:shadow-[0_0_30px_rgba(184,255,87,0.25)]"
             style={{
-              background: "#16161f",
-              color: colors.text2
+              background: colors.lime,
+              color: "#05050a"
             }}
           >
-            Or sign in with
-          </span>
-        </div>
-      </div>
+            <Sparkles className="h-5 w-5" />
+            Continue with Demo
+          </button>
+
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t" style={{ borderColor: colors.border2 }}></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span
+                className="px-4"
+                style={{
+                  background: "#16161f",
+                  color: colors.text2
+                }}
+              >
+                Or sign in with
+              </span>
+            </div>
+          </div>
+        </>
+      )}
 
       <button
         onClick={() => handleSignIn("google")}

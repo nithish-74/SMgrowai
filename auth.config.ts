@@ -13,20 +13,23 @@ export const authConfig = {
       clientId: process.env.AUTH_INSTAGRAM_ID,
       clientSecret: process.env.AUTH_INSTAGRAM_SECRET,
     }),
-    // Demo credentials provider for development
-    Credentials({
-      name: "Demo",
-      credentials: {},
-      async authorize() {
-        // Return a demo user object
-        return {
-          id: "demo-user-id",
-          name: "Demo User",
-          email: "demo@smgrowai.com",
-          image: "https://api.dicebear.com/7.x/avataaars/svg?seed=demo",
-        };
-      },
-    }),
+    // Only include demo credentials in development
+    ...(process.env.NODE_ENV === "development"
+      ? [
+          Credentials({
+            name: "Demo",
+            credentials: {},
+            async authorize() {
+              return {
+                id: "demo-user-id",
+                name: "Demo User",
+                email: "demo@smgrowai.com",
+                image: "https://api.dicebear.com/7.x/avataaars/svg?seed=demo",
+              };
+            },
+          }),
+        ]
+      : []),
   ],
   pages: {
     signIn: "/login",
