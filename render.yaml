@@ -2,7 +2,7 @@ services:
   - type: web
     name: smgrowai-web
     runtime: node
-    plan: starter
+    plan: free
     buildCommand: npm install && npx prisma generate && npm run build
     startCommand: npm start
     envVars:
@@ -29,4 +29,4 @@ databases:
   - name: smgrowai-db
     databaseName: smgrowai
     user: smgrowai
-    plan: starter
+    plan: free
