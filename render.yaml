@@ -1,7 +1,7 @@
 services:
   - type: web
     name: smgrowai-web
-    env: node
+    runtime: node
     plan: starter
     buildCommand: npm install && npx prisma generate && npm run build
     startCommand: npm start
@@ -21,18 +21,18 @@ services:
         generateValue: true
       - key: NEXTAUTH_URL
         fromService:
-          name: smgrowai-web
           type: web
+          name: smgrowai-web
           property: host
       - key: NEXT_PUBLIC_APP_URL
         fromService:
-          name: smgrowai-web
           type: web
+          name: smgrowai-web
           property: host
 
   - type: worker
     name: smgrowai-worker
-    env: node
+    runtime: node
     plan: starter
     buildCommand: npm install && npx prisma generate
     startCommand: npm run worker
