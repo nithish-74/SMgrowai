@@ -3,9 +3,13 @@ services:
     name: smgrowai-web
     runtime: node
     plan: free
+    region: oregon
+    autoDeploy: true
     buildCommand: npm ci && npx prisma generate && npm run build
     startCommand: npm start
     envVars:
+      - key: NODE_VERSION
+        value: 20
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
