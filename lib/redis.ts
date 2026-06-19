@@ -5,7 +5,7 @@ import type { ConnectionOptions } from "bullmq";
  * Upstash requires TLS — use rediss:// or enable tls on the connection.
  */
 export function getRedisConnection(): ConnectionOptions {
-  const url = process.env.UPSTASH_REDIS_URL;
+  const url = process.env.REDIS_URL || process.env.UPSTASH_REDIS_URL;
 
   if (url) {
     return { url, maxRetriesPerRequest: null };
