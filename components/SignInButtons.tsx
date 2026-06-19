@@ -40,7 +40,7 @@ export default function SignInButtons() {
             className="px-4"
             style={{
               background: "#16161f",
-              color: colors.text3
+              color: colors.text2
             }}
           >
             Or sign in with

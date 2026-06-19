@@ -16,8 +16,14 @@ export type ScanJobData = {
 let scanQueue: Queue<ScanJobData> | undefined;
 
 export function getScanQueue() {
+  const connection = getRedisConnection();
+  if (!connection) {
+    console.warn("Redis not configured—scan queue unavailable");
+    return undefined;
+  }
+  
   scanQueue ??= new Queue<ScanJobData>(SCAN_QUEUE_NAME, {
-    connection: getRedisConnection(),
+    connection,
     defaultJobOptions,
   });
   return scanQueue;
@@ -26,6 +32,11 @@ export function getScanQueue() {
 export async function addScanJob(
   data: ScanJobData,
   options?: JobsOptions
-): Promise<Job<ScanJobData>> {
-  return getScanQueue().add(SCAN_JOB_NAME, data, options);
+): Promise<Job<ScanJobData> | undefined> {
+  const queue = getScanQueue();
+  if (!queue) {
+    console.warn("Redis not configured—can't add scan job");
+    return undefined;
+  }
+  return queue.add(SCAN_JOB_NAME, data, options);
 }

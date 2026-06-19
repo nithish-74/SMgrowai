@@ -15,8 +15,14 @@ export type PostJobData = {
 let postQueue: Queue<PostJobData> | undefined;
 
 export function getPostQueue() {
+  const connection = getRedisConnection();
+  if (!connection) {
+    console.warn("Redis not configured—post queue unavailable");
+    return undefined;
+  }
+  
   postQueue ??= new Queue<PostJobData>(POST_QUEUE_NAME, {
-    connection: getRedisConnection(),
+    connection,
     defaultJobOptions,
   });
   return postQueue;
@@ -33,9 +39,14 @@ function getDelayMs(scheduledAt: Date | string): number | undefined {
 export async function addPostJob(
   data: PostJobData,
   options?: JobsOptions
-): Promise<Job<PostJobData>> {
+): Promise<Job<PostJobData> | undefined> {
+  const queue = getPostQueue();
+  if (!queue) {
+    console.warn("Redis not configured—can't add post job");
+    return undefined;
+  }
   const delay = getDelayMs(data.scheduledAt);
-  return getPostQueue().add(POST_JOB_NAME, data, {
+  return queue.add(POST_JOB_NAME, data, {
     ...options,
     ...(delay !== undefined ? { delay } : {}),
   });

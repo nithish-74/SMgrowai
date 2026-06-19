@@ -169,11 +169,17 @@ async function processGenerateJob(job: Job<GenerateJobData>) {
 }
 
 export function startGenerateWorker() {
+  const connection = getRedisConnection();
+  if (!connection) {
+    console.warn("[generate] Redis not configured, skipping generate worker");
+    return null;
+  }
+
   const worker = new Worker<GenerateJobData>(
     GENERATE_QUEUE_NAME,
     processGenerateJob,
     {
-      connection: getRedisConnection(),
+      connection,
       concurrency: GENERATE_CONCURRENCY,
     }
   );

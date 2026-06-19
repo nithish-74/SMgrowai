@@ -15,8 +15,14 @@ export type ScrapeJobData = {
 let scrapeQueue: Queue<ScrapeJobData> | undefined;
 
 export function getScrapeQueue() {
+  const connection = getRedisConnection();
+  if (!connection) {
+    console.warn("Redis not configured—scrape queue unavailable");
+    return undefined;
+  }
+  
   scrapeQueue ??= new Queue<ScrapeJobData>(SCRAPE_QUEUE_NAME, {
-    connection: getRedisConnection(),
+    connection,
     defaultJobOptions,
   });
   return scrapeQueue;
@@ -25,6 +31,11 @@ export function getScrapeQueue() {
 export async function addScrapeJob(
   data: ScrapeJobData,
   options?: JobsOptions
-): Promise<Job<ScrapeJobData>> {
-  return getScrapeQueue().add(SCRAPE_JOB_NAME, data, options);
+): Promise<Job<ScrapeJobData> | undefined> {
+  const queue = getScrapeQueue();
+  if (!queue) {
+    console.warn("Redis not configured—can't add scrape job");
+    return undefined;
+  }
+  return queue.add(SCRAPE_JOB_NAME, data, options);
 }

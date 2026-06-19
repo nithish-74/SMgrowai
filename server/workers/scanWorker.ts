@@ -146,8 +146,14 @@ async function processScanJob(job: Job<ScanJobData>) {
 }
 
 export function startScanWorker() {
+  const connection = getRedisConnection();
+  if (!connection) {
+    console.warn("[scan] Redis not configured, skipping scan worker");
+    return null;
+  }
+
   const worker = new Worker<ScanJobData>(SCAN_QUEUE_NAME, processScanJob, {
-    connection: getRedisConnection(),
+    connection,
     concurrency: SCAN_CONCURRENCY,
   });
 

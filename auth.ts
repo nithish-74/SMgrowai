@@ -8,7 +8,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     strategy: "jwt",
   },
   callbacks: {
-    ...authConfig.callbacks,
     async signIn({ user }) {
       return true;
     },

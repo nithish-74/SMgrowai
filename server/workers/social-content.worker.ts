@@ -22,10 +22,16 @@ async function processSocialContentJob(job: Job<SocialContentJobData>) {
 }
 
 export function createSocialContentWorker() {
+  const connection = getRedisConnection();
+  if (!connection) {
+    console.warn("[social-content] Redis not configured, skipping social content worker");
+    return null;
+  }
+
   return new Worker<SocialContentJobData>(
     SOCIAL_CONTENT_QUEUE_NAME,
     processSocialContentJob,
-    { connection: getRedisConnection() }
+    { connection }
   );
 }
 

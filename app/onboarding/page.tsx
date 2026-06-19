@@ -129,7 +129,7 @@ export default function OnboardingPage() {
           <Progress value={progress} className="h-2" style={{
             background: "#2a2a3a",
             "--tw-progress-fill": colors.lime
-          }} />
+          } as React.CSSProperties & { [key: string]: string }} />
         </div>
 
         {/* Step Content with Animation */}

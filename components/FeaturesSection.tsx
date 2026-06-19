@@ -59,7 +59,7 @@ export default function FeaturesSection() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <p className="text-lime text-sm mb-3 font-medium" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
-            // Features
+            {/* // Features */}
           </p>
           <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ fontFamily: "var(--font-clash-display)" }}>
             Not a tool. An operator.

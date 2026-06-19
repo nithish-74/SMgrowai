@@ -166,8 +166,14 @@ async function processPostJob(job: Job<PostJobData>) {
 }
 
 export function startPostWorker() {
+  const connection = getRedisConnection();
+  if (!connection) {
+    console.warn("[post] Redis not configured, skipping post worker");
+    return null;
+  }
+
   const worker = new Worker<PostJobData>(POST_QUEUE_NAME, processPostJob, {
-    connection: getRedisConnection(),
+    connection,
     concurrency: POST_CONCURRENCY,
   });
 

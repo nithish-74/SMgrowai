@@ -13,8 +13,14 @@ export type SocialContentJobData = {
 let socialContentQueue: Queue<SocialContentJobData> | undefined;
 
 export function getSocialContentQueue() {
+  const connection = getRedisConnection();
+  if (!connection) {
+    console.warn("Redis not configured—social content queue unavailable");
+    return undefined;
+  }
+  
   socialContentQueue ??= new Queue<SocialContentJobData>(SOCIAL_CONTENT_QUEUE_NAME, {
-    connection: getRedisConnection(),
+    connection,
     defaultJobOptions,
   });
   return socialContentQueue;

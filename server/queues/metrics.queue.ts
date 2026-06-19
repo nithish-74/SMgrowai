@@ -14,8 +14,14 @@ export type MetricsJobData = {
 let metricsQueue: Queue<MetricsJobData> | undefined;
 
 export function getMetricsQueue() {
+  const connection = getRedisConnection();
+  if (!connection) {
+    console.warn("Redis not configured—metrics queue unavailable");
+    return undefined;
+  }
+  
   metricsQueue ??= new Queue<MetricsJobData>(METRICS_QUEUE_NAME, {
-    connection: getRedisConnection(),
+    connection,
     defaultJobOptions,
   });
   return metricsQueue;
@@ -24,9 +30,14 @@ export function getMetricsQueue() {
 export async function addMetricsJob(
   data: MetricsJobData,
   options?: JobsOptions
-): Promise<Job<MetricsJobData>> {
+): Promise<Job<MetricsJobData> | undefined> {
+  const queue = getMetricsQueue();
+  if (!queue) {
+    console.warn("Redis not configured—can't add metrics job");
+    return undefined;
+  }
   const delayMs = data.delayHours * 60 * 60 * 1000;
-  return getMetricsQueue().add(METRICS_JOB_NAME, data, {
+  return queue.add(METRICS_JOB_NAME, data, {
     ...options,
     delay: delayMs,
   });

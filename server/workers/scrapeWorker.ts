@@ -172,11 +172,17 @@ async function processScrapeJob(job: Job<ScrapeJobData>) {
 }
 
 export function startScrapeWorker() {
+  const connection = getRedisConnection();
+  if (!connection) {
+    console.warn("[scrape] Redis not configured, skipping scrape worker");
+    return null;
+  }
+
   const worker = new Worker<ScrapeJobData>(
     SCRAPE_QUEUE_NAME,
     processScrapeJob,
     {
-      connection: getRedisConnection(),
+      connection,
       concurrency: SCRAPE_CONCURRENCY,
     }
   );

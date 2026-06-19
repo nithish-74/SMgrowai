@@ -30,11 +30,17 @@ async function processMetricsJob(job: Job<MetricsJobData>) {
 }
 
 export function startMetricsWorker() {
+  const connection = getRedisConnection();
+  if (!connection) {
+    console.warn("[metrics] Redis not configured, skipping metrics worker");
+    return null;
+  }
+
   const worker = new Worker<MetricsJobData>(
     METRICS_QUEUE_NAME,
     processMetricsJob,
     {
-      connection: getRedisConnection(),
+      connection,
       concurrency: METRICS_CONCURRENCY,
     }
   );

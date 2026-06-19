@@ -6,10 +6,6 @@ import { Resend } from "resend";
 
 const DIGEST_QUEUE_NAME = "daily-digest";
 
-const digestQueue = new Queue(DIGEST_QUEUE_NAME, {
-  connection: getRedisConnection(),
-});
-
 async function processDigestJob(job: Job) {
   console.log("[digest] Processing daily digest job");
 
@@ -50,11 +46,19 @@ async function processDigestJob(job: Job) {
 }
 
 export function startDigestWorker() {
+  const connection = getRedisConnection();
+  if (!connection) {
+    console.warn("[digest] Redis not configured, skipping digest worker");
+    return null;
+  }
+
+  const digestQueue = new Queue(DIGEST_QUEUE_NAME, { connection });
+
   const worker = new Worker(
     DIGEST_QUEUE_NAME,
     processDigestJob,
     {
-      connection: getRedisConnection(),
+      connection,
       concurrency: 5,
     }
   );

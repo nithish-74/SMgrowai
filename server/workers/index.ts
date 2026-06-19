@@ -36,7 +36,7 @@ function waitForWorkerReady(worker: Worker, name: string): Promise<void> {
 }
 
 async function startWorkers() {
-  workers = [
+  const workerResults = [
     { name: "scrape", instance: startScrapeWorker() },
     { name: "scan", instance: startScanWorker() },
     { name: "generate", instance: startGenerateWorker() },
@@ -46,6 +46,10 @@ async function startWorkers() {
     { name: "digest", instance: startDigestWorker() },
   ];
 
+  // Filter out null workers
+  workers = workerResults.filter((w): w is NamedWorker => w.instance !== null);
+
+  // Only wait for workers that actually started
   await Promise.all(
     workers.map(({ name, instance }) => waitForWorkerReady(instance, name))
   );
@@ -68,7 +72,7 @@ async function shutdown(signal: string) {
       getPostQueue(),
       getSocialContentQueue(),
       getMetricsQueue(),
-    ];
+    ].filter((q): q is NonNullable<typeof q> => q !== undefined);
     await Promise.all(queues.map((queue) => queue.close()));
     console.log("[workers] All queues closed");
 
